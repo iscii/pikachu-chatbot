@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import pikachu_pfp from "./assets/pikachu_pfp.jpg";
+import { db } from "./firebase";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  getCountFromServer,
+  where,
+  documentId,
+  query,
+} from "firebase/firestore";
 
 const ChatBotUIComp = () => {
   const [messages, setMessages] = useState([]);
@@ -9,6 +19,18 @@ const ChatBotUIComp = () => {
 
   useEffect(() => {
     setMessages([{ sender: "ai", text: "Pika!" }]); //initial message
+
+    const fetchData = async () => {
+      const messagesDoc = await getCountFromServer(
+        query(collection(db, "messages"), where(documentId(), "==", "hi"))
+      );
+      console.log(messagesDoc.data().count);
+      // const docs = await getDocs(collection(db, "messages"));
+      // docs.forEach((doc) => {
+      //   console.log(doc.id, " => ", doc.data());
+      // });
+    };
+    fetchData();
   }, []);
 
   // scroll to bottom of chat window every update
