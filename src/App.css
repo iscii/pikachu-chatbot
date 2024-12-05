@@ -7,23 +7,26 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column; /* Ensures stacking of elements */
 }
 
 .chatbot-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  max-width: 450px; 
+  width: 70vw; /* Set width to 70% of the viewport width */
+  max-width: 700px; /* Optional: Max width for larger screens */
+  max-height: 70vh; /* Set height to 70% of the viewport height */
   background-color: #e97c7c; 
   border-radius: 10px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  overflow: hidden; /* Ensures no overflow from container itself */
 }
 
 .chat-window {
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; /* Enables vertical scrolling when content overflows */
   padding: 10px;
   background-color: #fff9c4;
   border-radius: 8px;
@@ -34,24 +37,26 @@ body {
 }
 
 .message {
+  display: flex;
+  align-items: center; /* Aligns avatar and text vertically */
+  justify-content: flex-start; /* Aligns the avatar to the left */
   padding: 10px;
   border-radius: 8px;
   max-width: 70%;
   margin: 5px 0;
   word-wrap: break-word;
   color: rgb(80, 80, 80);
+  text-align: left; /* Keeps the text aligned to the left */
 }
 
 .user-message {
-  background-color:  rgb(247, 198, 198);
+  background-color: rgb(247, 198, 198);
   align-self: flex-start; 
-  text-align: left;
 }
 
 .ai-message {
   background-color: rgb(160, 160, 160);
   align-self: flex-start;
-  text-align: left;
 }
 
 .input-container {
@@ -66,7 +71,7 @@ body {
   border: 1px solid #f4c542; 
   font-size: 14px;
   background-color: #fffde7;
-  color:rgb(80, 80, 80);
+  color: rgb(80, 80, 80);
 }
 
 .send-button {
@@ -74,17 +79,50 @@ body {
   background-color: #ffeb3b;
   border: none;
   border-radius: 8px;
-  color: rgb(80, 80, 80);;
+  color: rgb(80, 80, 80);
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .send-button:hover {
-  background-color: #ffca28; 
+  background-color: #ffca28;
 }
 
 .title {
   color: rgb(80, 80, 80);
   text-align: center;
+}
+
+.sign-in {
+  color: rgb(80, 80, 80);
+  text-align: center;
+  width: 100%; /* Ensures sign-in div takes up full width */
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+}
+
+.sign-in-button {
+  padding: 10px 20px;
+  background-color: #e97c7c;
+  border: none;
+  border-radius: 8px;
+  color: rgb(80, 80, 80);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 550;
+  transition: background-color 0.3s ease;
+}
+
+.ai-avatar {
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%; 
+  object-fit: cover;
+  margin-right: 10px; /* Adds space between avatar and message text */
+}
+
+.message-text {
+  flex-grow: 1; 
+  text-align: left; /* Keep message text aligned left */
 }

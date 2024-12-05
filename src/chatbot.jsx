@@ -5,16 +5,6 @@ const ChatBotUIComp = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
 
-  // Fetch the initial question from the backend on component load
-  useEffect(() => {
-    fetch("http://localhost:5000/ask")
-      .then((response) => response.json())
-      .then((data) => {
-        setMessages([{ sender: 'ai', text: data.question }]);
-      })
-      .catch((error) => console.error('Error fetching initial question:', error));
-  }, []);
-
   function generatePikachuVocabulary() {
     const vocabularyList = [
       'Pika Pikachu',
@@ -46,25 +36,6 @@ const ChatBotUIComp = () => {
     if (input.trim()) {
       setMessages([...messages, { sender: 'user', text: input }]);
       setInput('');
-
-      // send the user response to backend
-      fetch("http://localhost:5000/response", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ response: input }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { sender: 'ai', text: data.next_question },
-          ]);
-        })
-        .catch((error) => console.error('Error sending response:', error));
-
-      // Simulate AI response (to be removed when backend is used)
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -88,7 +59,14 @@ const ChatBotUIComp = () => {
             key={index}
             className={`message ${message.sender === 'user' ? 'user-message' : 'ai-message'}`}
           >
-            <strong>{message.sender === 'user' ? 'You:' : 'Pikachu:'}</strong> {message.text}
+            {message.sender === 'ai' && (
+              <img
+                src="../public/pikachu_pfp.jpg"
+                alt="Pikachu Avatar"
+                className="ai-avatar"
+              />
+            )}
+            <span className='message-text'>{message.sender === 'user' ? "You: " : "Pikachu: "}</span> {message.text}
           </div>
         ))}
       </div>
