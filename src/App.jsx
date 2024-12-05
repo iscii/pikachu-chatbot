@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { auth, analytics } from './firebase';
+import React, { useState, useEffect } from "react";
+import { auth, analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import './App.css';
-import ChatBotUIComp from './chatbot';
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+} from "firebase/auth";
+import "./App.css";
+import ChatBotUIComp from "./chatbot";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,11 +17,11 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        logEvent(analytics, 'sign_in', { method: 'Google' });
+        logEvent(analytics, "sign_in", { method: "Google" });
         setIsAuthenticated(true);
         setUser(user);
       } else {
-        logEvent(analytics, 'sign_out');
+        logEvent(analytics, "sign_out");
         setIsAuthenticated(false);
         setUser(null);
       }
@@ -49,19 +54,24 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">Pikachu Chatbot</h1>
-
-      {isAuthenticated ? (
-        <div>
-          <ChatBotUIComp />
-          <button onClick={handleSignOut}>Sign Out</button>
-        </div>
-      ) : (
-        <div>
-          <h2 className='sign-in'>Please sign in to access the chatbot</h2>
-          <button className='sign-in-button' onClick={signInWithGoogle}>Sign In with Google</button>
-        </div>
-      )}
+      <div className="content-container">
+        <h1 className="title">Pikachu Chatbot</h1>
+        {isAuthenticated ? (
+          <>
+            <ChatBotUIComp />
+            <button className="sign-out-button" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          </>
+        ) : (
+          <>
+            <h2 className="sign-in">Please sign in to access the chatbot</h2>
+            <button className="sign-in-button" onClick={signInWithGoogle}>
+              Sign In with Google
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
