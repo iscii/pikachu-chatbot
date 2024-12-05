@@ -1,8 +1,7 @@
-# React + Vite
+# Pikachu Chatbot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Use this fun chatbot to have a conversation with the iconic Pokémon Pikachu! Pikachu will reply back with it's favorite phrases.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Usage:
+npm i <br/>
+npm run dev
