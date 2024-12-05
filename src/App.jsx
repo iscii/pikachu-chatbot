@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { auth } from './firebase';
+import { auth, analytics } from './firebase';
+import { logEvent } from "firebase/analytics";
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import './App.css';
 import ChatBotUIComp from './chatbot';
@@ -11,9 +12,11 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        logEvent(analytics, 'sign_in', { method: 'Google' });
         setIsAuthenticated(true);
         setUser(user);
       } else {
+        logEvent(analytics, 'sign_out');
         setIsAuthenticated(false);
         setUser(null);
       }
