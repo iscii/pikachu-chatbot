@@ -1,8 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import ChatBotUIComp from '../chatbot';
+import ChatBotUIComp from '../src/chatbot';
 
 jest.useFakeTimers();
+// Mock authentication
+jest.mock('../src/firebase', () => ({
+    auth: { currentUser: { displayName: 'Test User' } },  // Mock current user as signed in
+    getAuth: jest.fn(),
+  }));
+  
 
 // User message display test
 test('displays user message when sent', () => {

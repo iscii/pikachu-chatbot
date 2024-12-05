@@ -1,6 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ChatBotUIComp from '../chatbot';
+import ChatBotUIComp from '../src/chatbot';
+
+// Mock authentication
+jest.mock('../src/firebase', () => ({
+    auth: { currentUser: { displayName: 'Test User' } },  // Mock current user as signed in
+    getAuth: jest.fn(),
+  }));
+  
 
 test('renders chatbot UI with input and send button', () => {
   render(<ChatBotUIComp />);
