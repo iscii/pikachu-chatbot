@@ -1,3 +1,5 @@
+import '@testing-library/jest-dom';
+
 // jest.setup.js
 jest.mock('firebase/analytics', () => ({
     getAnalytics: jest.fn(),
