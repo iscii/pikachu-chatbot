@@ -1,0 +1,10 @@
+version: "1.0"
+
+services:
+  pikachu-chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    container_name: pikachu-chatbot
