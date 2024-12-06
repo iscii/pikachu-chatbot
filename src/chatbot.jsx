@@ -3,40 +3,42 @@ import "./App.css";
 import pikachu_pfp from "./assets/pikachu_pfp.jpg";
 import { db } from "./firebase";
 import {
-  getDocs,
   collection,
   addDoc,
-  getCountFromServer,
-  where,
-  documentId,
   query,
+  orderBy,
+  limit,
+  getDocs,
+  where,
 } from "firebase/firestore";
 
-const ChatBotUIComp = () => {
+const ChatBotUIComp = ({ user }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const stillThereTimeout = useRef(null);
 
   useEffect(() => {
-    setMessages([{ sender: "ai", text: "Pika!" }]); //initial message
-
-    const fetchData = async () => {
-      const messagesDoc = await getCountFromServer(
-        query(collection(db, "messages"), where(documentId(), "==", "hi"))
-      );
-      console.log(messagesDoc.data().count);
-      // const docs = await getDocs(collection(db, "messages"));
-      // docs.forEach((doc) => {
-      //   console.log(doc.id, " => ", doc.data());
-      // });
+    const fetchMessages = async () => {
+      if (user) {
+        const messagesRef = collection(db, "messages");
+        const q = query(
+          messagesRef,
+          where("userId", "==", user.uid),
+          orderBy("timestamp", "asc")
+        );
+        const querySnapshot = await getDocs(q);
+        const messagesData = querySnapshot.docs.map((doc) => doc.data());
+        setMessages(messagesData);
+      }
     };
-    fetchData();
-  }, []);
+    fetchMessages();
+  }, [user]);
 
-  // scroll to bottom of chat window every update
   useEffect(() => {
     const chatWindow = document.querySelector(".chat-window");
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
   }, [messages]);
 
   function generatePikachuVocabulary() {
@@ -64,26 +66,27 @@ const ChatBotUIComp = () => {
     return vocabularyList[randomIndex];
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (input.trim()) {
-      setMessages([...messages, { sender: "user", text: input }]);
+      const newUserMessage = { sender: "user", text: input, timestamp: new Date(), userId: user.uid };
+      await addDoc(collection(db, "messages"), newUserMessage);
+      setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+
       setInput("");
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "ai", text: generatePikachuVocabulary() },
-        ]);
+
+      setTimeout(async () => {
+        const newAiMessage = { sender: "ai", text: generatePikachuVocabulary(), timestamp: new Date(), userId: user.uid };
+        await addDoc(collection(db, "messages"), newAiMessage);
+        setMessages((prevMessages) => [...prevMessages, newAiMessage]);
       }, Math.random() * 2000);
 
-      // asks if ur still there after 20 seconds without response
       if (stillThereTimeout.current) {
         clearTimeout(stillThereTimeout.current);
       }
       stillThereTimeout.current = setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "ai", text: "Pika?" },
-        ]);
+        const newAiMessage = { sender: "ai", text: "Pika?", timestamp: new Date(), userId: user.uid };
+        addDoc(collection(db, "messages"), newAiMessage);
+        setMessages((prevMessages) => [...prevMessages, newAiMessage]);
       }, 20000);
     }
   };
@@ -122,11 +125,7 @@ export default ChatBotUIComp;
 
 const Message = ({ message }) => {
   return (
-    <div
-      className={`message ${
-        message.sender === "user" ? "user-message" : "ai-message"
-      }`}
-    >
+    <div className={`message ${message.sender === "user" ? "user-message" : "ai-message"}`}>
       {message.sender === "ai" && (
         <img src={pikachu_pfp} alt="Pikachu Avatar" className="ai-avatar" />
       )}

@@ -58,7 +58,7 @@ function App() {
         <h1 className="title">Pikachu Chatbot</h1>
         {isAuthenticated ? (
           <>
-            <ChatBotUIComp />
+            <ChatBotUIComp user={user} />
             <button className="sign-out-button" onClick={handleSignOut}>
               Sign Out
             </button>
