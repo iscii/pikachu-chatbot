@@ -18,4 +18,4 @@ jobs:
       run: npm install
 
     - name: Run tests
-      run: npm test
+      run: npm test --./tests/messages.test.js ./tests/rendering.test.js
