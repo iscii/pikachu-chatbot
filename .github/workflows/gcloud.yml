@@ -17,5 +17,8 @@ jobs:
             service_account_key: ${{ secrets.GCP_SA_KEY }}
             export_default_credentials: true
 
+        - name: Configure gcloud project
+          run: gcloud config set project nomadic-vertex-444204-s5
+
         - name: Deploy to Google Cloud
           run: gcloud app deploy
