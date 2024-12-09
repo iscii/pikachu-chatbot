@@ -10,6 +10,17 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
 
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '18'
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build project
+          run: npm run build
+
         - name: Set up Google Cloud SDK
           uses: google-github-actions/setup-gcloud@v0.2.0
           with:
