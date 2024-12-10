@@ -32,4 +32,4 @@ jobs:
           run: gcloud config set project nomadic-vertex-444204-s5
 
         - name: Deploy to Google Cloud
-          run: gcloud app deploy
+          run: gcloud run deploy
