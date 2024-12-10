@@ -2,8 +2,8 @@ runtime: nodejs18  # Specify the Node.js runtime version
 
 handlers:
   - url: /static
-    static_dir: build/static
+    static_dir: dist/static
 
   - url: /.*
-    static_files: build/index.html
-    upload: build/index.html
+    static_files: dist/index.html
+    upload: dist/index.html
