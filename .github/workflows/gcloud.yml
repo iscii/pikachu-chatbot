@@ -21,8 +21,10 @@ jobs:
         - name: Build project
           run: npm run build
 
-        - name: Build Docker
-          run: docker compose up --build -d
+        - name: Build Docker Image
+          run: docker compose build
+        - name: Start Docker Containers
+          run: docker compose up -d
 
         - name: Set up Google Cloud SDK
           uses: google-github-actions/setup-gcloud@v0.2.0
